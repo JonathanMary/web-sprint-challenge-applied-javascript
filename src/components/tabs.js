@@ -22,8 +22,10 @@ const Tabs = (topics) => {
     let tab = document.createElement("div");
     tab.classList.add("tab");
     tab.textContent = `${topic}`;
+    
     topicsDiv.appendChild(tab);
   })
+
   return topicsDiv;
 }
 
@@ -43,4 +45,6 @@ const tabsAppender = (selector) => {
        .catch(err => console.log(err))
 }
 
+
 export { Tabs, tabsAppender }
+

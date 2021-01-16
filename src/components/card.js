@@ -41,7 +41,7 @@ const Card = (article) => {
   author.appendChild(spanName);
 
   card.addEventListener("click", event => console.log(event.target.parentNode.querySelector(".headline").textContent));
-
+  
   return card;
 }
 
@@ -57,9 +57,35 @@ const cardAppender = (selector) => {
   axios.get(`https://lambda-times-api.herokuapp.com/articles`)
        .then(data => {
          //get the articles by topic, parse articles into each topic then append it.
-         Object.values(data.data.articles).forEach(array => array.forEach(article => document.querySelector(selector).appendChild(Card(article))));
-       })
+         const query = data.data.articles;
+         Object.keys(query).forEach(key => {
+           query[key].forEach(article => {
+             let newCard = Card(article);
+             newCard.classList.add(key);
+             document.querySelector(selector).appendChild(newCard);
+
+           });
+        });
+      })
        .catch(err => console.log(err))
 }
 
+window.addEventListener("load", event => document.querySelectorAll(".tab").forEach(div => {
+  div.addEventListener("click", event => {
+    let select = event.target.textContent;
+    
+    document.querySelectorAll(".card").forEach(x => {
+      if(select === "node.js"){ select = "node"}
+
+      if(x.className.includes(select)){
+        x.style.display = "block";
+      }else{
+        x.style.display = "none";
+      }
+    })
+  });
+}));
+
 export { Card, cardAppender }
+
+
